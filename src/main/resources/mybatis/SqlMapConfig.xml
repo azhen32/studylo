@@ -10,4 +10,12 @@
         	<property name="dialect" value="mysql"/>
 		</plugin>
 	</plugins>-->
+	<settings>
+		<!-- 开启全局性设置懒加载 -->
+		<setting name="lazyLoadingEnabled" value="true"/>
+		<!-- 开启按需加载 -->
+		<setting name="aggressiveLazyLoading" value="false"/>
+		<!-- 开启二级缓存 -->
+		<!-- <setting name="cacheEnabled" value="true"/>-->
+	</settings>
 </configuration>

@@ -20,6 +20,7 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 
 public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler  implements UserDetailsService {
     private UserService userService;
+
     private String roleType;
 
     @Override
@@ -40,12 +41,13 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
         boolean credentialsFlag = true;
         boolean lockFlag = true;
         boolean enabled = false;
+        //com.azhen.domain.User users = userService.findByEmailAll(email);
         com.azhen.domain.User users = userService.findByEmail(email);
-        if (users == null) {
+        /*if (users == null) {
             accountFlag = false;
             throw new UsernameNotFoundException((new StringBuffer(users.getEmail()).append("不存在").toString()));
         }
-      /*  for (Iterator iterator = users.getUsersRoles().iterator(); iterator.hasNext();) {
+        for (Iterator iterator = users.getUsersRoles().iterator(); iterator.hasNext();) {
             UsersRoles usersRoles = (UsersRoles) iterator.next();
             Roles roles = usersRoles.getRoles();
             RolesAuthorities rolesAuthorities;
@@ -61,6 +63,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
         userdetail = new User(users.getNickname(), users.getPassword(), enabled, accountFlag, credentialsFlag, lockFlag,
                 (GrantedAuthority[]) authsList.toArray(new GrantedAuthority[authsList.size()]));
 */
+
         return userdetail;
     }
 

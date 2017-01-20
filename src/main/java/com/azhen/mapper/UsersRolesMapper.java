@@ -1,5 +1,6 @@
 package com.azhen.mapper;
 
+import com.azhen.domain.User;
 import com.azhen.domain.UsersRoles;
 import com.azhen.domain.UsersRolesExample;
 import java.util.List;
@@ -11,6 +12,8 @@ public interface UsersRolesMapper {
     int deleteByExample(UsersRolesExample example);
 
     int insert(UsersRoles record);
+
+    UsersRoles findByUserId(Long userId);
 
     int insertSelective(UsersRoles record);
 

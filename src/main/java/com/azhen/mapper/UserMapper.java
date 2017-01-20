@@ -3,6 +3,8 @@ package com.azhen.mapper;
 import com.azhen.domain.User;
 import com.azhen.domain.UserExample;
 import java.util.List;
+
+import com.azhen.domain.UsersRoles;
 import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper {
@@ -21,6 +23,8 @@ public interface UserMapper {
     List<User> selectByExampleAll(UserExample example);
 
     User selectByPrimaryKey(Long id);
+
+    UsersRoles findUserRoleById(Long id);
 
     int updateByExampleSelective(@Param("record") User record, @Param("example") UserExample example);
 

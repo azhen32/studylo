@@ -5,24 +5,25 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+
 import java.util.Date;
 import java.util.List;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
+/**
+ * Created by azhen on 17-1-20.
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 //如果要回滚的话，需要注入事务管理器
 @ContextConfiguration(locations = {"classpath:spring/applicationContext-dao.xml","classpath:spring/applicationContext-trans.xml"})
 //@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 @Transactional
-public class UserMapperTest  {
+public class UsersRolesMapperTest {
 
 
     @Autowired
@@ -32,8 +33,7 @@ public class UserMapperTest  {
     @Autowired
     private RolesMapper rolesMapper;
 
-
-    //@Before
+    @Before
     public void before() {
         User user = new User("azhen","1234");
         user.setId(1L);
@@ -52,48 +52,24 @@ public class UserMapperTest  {
         rolesMapper.insert(roles2);
 
         UsersRoles usersRoles1 = new UsersRoles();
-        UsersRoles usersRoles2 = new UsersRoles();
         usersRoles1.setUserId(1L);
         usersRoles1.setRoleId(1);
+        usersRolesMapper.insert(usersRoles1);
+
+        UsersRoles usersRoles2 = new UsersRoles();
         usersRoles2.setUserId(1L);
         usersRoles2.setRoleId(2);
-        usersRolesMapper.insert(usersRoles1);
         usersRolesMapper.insert(usersRoles2);
-
-
     }
-
     @Test
-    //@Rollback(false)    //此方法不会滚
-    public void save() {
-        User user = new User();
-        user.setId(Long.valueOf(2));
-        user.setEmail("296426127@qq.com");
-        user.setCreateTime(new Date());
-        user.setUpdateTime(user.getCreateTime());
-        user.setNickname("azhen");
-        userMapper.insert(user);
-        assertThat(user.getId()).isNotNull();
-    }
-
-    @Test
-    public void findUserRoleById() throws Exception {
-        UsersRoles usersRoles1 = new UsersRoles();
-        usersRoles1.setUserId(1L);
-        usersRoles1.setRoleId(1);
-        usersRolesMapper.insert(usersRoles1);
-        UsersRoles usersRoles = usersRolesMapper.findByUserId(1L);
-        assertNotNull(usersRoles);
-    }
-
-    @Test
-    public void selectByExampleAll() throws Exception {
-        UserExample example = new UserExample();
-        UserExample.Criteria criteria = example.createCriteria();
-        criteria.andIdEqualTo(1L);
-        List<User> userList = userMapper.selectByExampleAll(example);
-        for(User user : userList) {
-            assertThat(user.getUserRoles()).isNotEmpty();
+    public void selectByExample() throws Exception {
+        UsersRolesExample example = new UsersRolesExample();
+        UsersRolesExample.Criteria criteria = example.createCriteria();
+        criteria.andUserIdEqualTo(1L);
+        List<UsersRoles> usersRolesList = usersRolesMapper.selectByExample(example);
+        assertThat(usersRolesList).hasSize(2);
+        for(UsersRoles ur : usersRolesList) {
+            ur.getUser();
         }
     }
 }

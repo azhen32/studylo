@@ -2,6 +2,7 @@ package com.azhen.domain;
 
 import org.hibernate.validator.constraints.*;
 import javax.validation.constraints.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,20 +29,30 @@ public class User {
 
     private Date updateTime;
 
-    private List<UsersRoles> usersRoles;
+    private List<UsersRoles> userRoles;
 
-    public List<UsersRoles> getUsersRoles() {
-        return usersRoles;
-    }
-
-    public void setUsersRoles(List<UsersRoles> usersRoles) {
-        this.usersRoles = usersRoles;
-    }
+    private List<Videos> videos;
 
     public User() {}
     public User(String nickname, String password) {
         this.nickname = nickname;
         this.password = password;
+    }
+
+    public List<UsersRoles> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(List<UsersRoles> userRoles) {
+        this.userRoles = userRoles;
+    }
+
+    public List<Videos> getVideos() {
+        return videos;
+    }
+
+    public void setVideos(List<Videos> videos) {
+        this.videos = videos;
     }
 
     public Long getId() {
