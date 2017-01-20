@@ -35,7 +35,6 @@
 			<tx:method name="get*" propagation="SUPPORTS" read-only="true" />
 			<!-- 数据库无关 -->
 			<tx:method name="find*" propagation="SUPPORTS" read-only="true" />
-			
 			<!-- controller -->
 			<!-- 
 			修改:modify

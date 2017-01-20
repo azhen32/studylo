@@ -20,8 +20,8 @@ import java.util.List;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/applicationContext-*.xml")
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
+@ContextConfiguration(locations = {"classpath:spring/applicationContext-dao.xml","classpath:spring/applicationContext-service.xml","classpath:spring/applicationContext-trans.xml"})
+//@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 @Transactional
 public class UserMapperTest  {
 
