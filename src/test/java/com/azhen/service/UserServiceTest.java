@@ -28,7 +28,8 @@ import static org.junit.Assert.assertNotNull;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 //如果要回滚的话，需要注入事务管理器
-@ContextConfiguration(locations = {"classpath:spring/applicationContext-dao.xml","classpath:spring/applicationContext-service.xml","classpath:spring/applicationContext-trans.xml"})
+//@ContextConfiguration(locations = {"classpath:spring/applicationContext-dao.xml","classpath:spring/applicationContext-service.xml","classpath:spring/applicationContext-trans.xml"})
+@ContextConfiguration(locations = {"classpath:spring/applicationContext-*.xml","classpath:spring/springmvc.xml"})
 //@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 @Transactional
 public class UserServiceTest {
@@ -46,7 +47,7 @@ public class UserServiceTest {
     @Before
     public void before() {
         User user = new User("azhen","1234");
-        user.setId(1L);
+        user.setId(100L);
         user.setUpdateTime(new Date());
         user.setEmail("111@qq.com");
         userMapper.insert(user);
@@ -64,22 +65,22 @@ public class UserServiceTest {
         rolesMapper.insert(roles2);
 
         UsersRoles usersRoles1 = new UsersRoles();
-        usersRoles1.setUserId(1L);
+        usersRoles1.setUserId(100L);
         usersRoles1.setRoleId(1);
         usersRolesMapper.insert(usersRoles1);
 
         UsersRoles usersRoles2 = new UsersRoles();
-        usersRoles2.setUserId(1L);
+        usersRoles2.setUserId(100L);
         usersRoles2.setRoleId(2);
         usersRolesMapper.insert(usersRoles2);
 
         Videos video1 = new Videos();
         video1.setName("video 1");
-        video1.setUserId(1L);
+        video1.setUserId(100L);
         video1.setId(1L);
         videosMapper.insert(video1);
         Videos video2 = new Videos();
-        video2.setUserId(1L);
+        video2.setUserId(100L);
         //video2.setName("影片2");
         video2.setName("video 2");
         video2.setId(2L);

@@ -12,10 +12,10 @@
     <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
     <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
 
-    <collection property="videos" javaType="ArrayList" ofType="com.azhen.domain.Videos"
+    <collection property="videos" javaType="ArrayList" ofType="com.azhen.domain.Videos"  fetchType="lazy"
                 column="ID" select="com.azhen.mapper.VideosMapper.selectByUserId">
     </collection>
-   <collection property="userRoles" javaType="ArrayList"
+   <collection property="userRoles" javaType="ArrayList"  fetchType="lazy"
                 ofType="com.azhen.domain.UsersRoles" select="com.azhen.mapper.UsersRolesMapper.findByUserId" column="{id=ID}">
     </collection>
   </resultMap>
