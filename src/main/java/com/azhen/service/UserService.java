@@ -1,6 +1,7 @@
 package com.azhen.service;
 
 import com.azhen.domain.User;
+import com.azhen.dto.EUDataGridResult;
 import com.azhen.dto.Result;
 
 /**
@@ -9,11 +10,21 @@ import com.azhen.dto.Result;
 public interface UserService {
     Integer save(User user);
 
+    /**
+     * 启用用户
+     * @param ids
+     * @return
+     */
+    Integer enable(String ids);
+
     User find(String nickName);
     User findByEmail(String email);
     User findByEmailAll(String email);
 
+
     boolean hasMatchUser(String nickname, String password);
 
     User get(Long id);
+
+    EUDataGridResult getUserList(Integer page, Integer rows);
 }

@@ -15,11 +15,11 @@
 <!-- 登录表单 -->
 <form name="loginForm" action="<c:url value='/j_spring_security_check'/>" method="post">
     <!-- 登录失败后，显示之前的登录名 -->
-    用户名：<input type='text' name='j_username' class="txtinput"
+    用户名：<input type='text' name='j_username' class="txtinput" value="admin"
                value='<c:if test="${not empty param.login_error}" >
 		<c:out value="${SPRING_SECURITY_LAST_USERNAME}"/></c:if>' />
     <br />
-    密码：<input type='password' name='j_password' class="txtinput" />
+    密码：<input type='password' name='j_password' class="txtinput" value="admin"/>
     <br />
 
     <input type="checkbox" name="_spring_security_remember_me" />

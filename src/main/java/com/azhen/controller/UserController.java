@@ -1,6 +1,7 @@
 package com.azhen.controller;
 
 import com.azhen.domain.User;
+import com.azhen.dto.EUDataGridResult;
 import com.azhen.dto.Result;
 import com.azhen.service.UserService;
 import com.azhen.util.JsonUtils;
@@ -26,6 +27,32 @@ public class UserController {
     private UserService userService;
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
+
+    /**
+     * 用户启用
+     * @return
+     */
+    @RequestMapping("/enable")
+    @RequestBody
+    public Result enableUser(String ids) {
+        userService.batch(String ids);
+        return Result.ok();
+    }
+
+
+    /**
+     * 用户列表查询
+     * @param page
+     * @param rows
+     * @return
+     */
+    @RequestMapping("/list")
+    @ResponseBody
+    public EUDataGridResult getUserList(Integer page,Integer rows) {
+        EUDataGridResult result = userService.getUserList(page,rows);
+        return result;
+    }
+
     @RequestMapping(value="/store",method = RequestMethod.POST)
     public String save(@Valid User user, BindingResult result) {
         if(result.hasErrors()) {
@@ -47,7 +74,4 @@ public class UserController {
         return JsonUtils.objectToJson(Result.error());
     }
 
-    public UserService getUserService() {
-        return this.userService;
-    }
 }

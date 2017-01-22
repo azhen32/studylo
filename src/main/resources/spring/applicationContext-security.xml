@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security.xsd">
+<http>
+        <!-- 不拦截login.jsp -->
+        <intercept-url pattern="/login.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <!--仅拦截到manager下面的内容，具备access对应权限的-->
+        <intercept-url pattern="/manager/**" access="ROLE_ADMIN,ROLE_LAOBAN,ROLE_DIANZHANG,ROLE_DIANYUAN"/>
+        <!-- 设置登录过滤器 -->
+        <custom-filter before="FORM_LOGIN_FILTER" ref="authenticationProcessingFilter"/>
+        <!-- 登录表单设置 -->
+        <!--
+            login-page表示用户登陆时显示我们自定义的login.jsp
+			default-target-url表示登陆成功时，跳转到哪个页面
+			authentication-failure-url表示用户登陆失败时，跳转到哪个页面。
+        -->
+        <form-login login-page="/login.jsp"
+                    default-target-url="/"
+                    authentication-failure-url="/login.jsp?error=true" />
+
+        <!-- 登出操作后跳转到该页面 -->
+        <logout logout-success-url="/loggedout.jsp"
+                delete-cookies="JSESSIONID" />
+        <remember-me />
+
+        <!-- SESSION超时后跳转到该页面 -->
+        <session-management invalid-session-url="/timeout.jsp">
+        </session-management>
+    </http>
+
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider>
+            <!--
+                直接使用SQL语句查询登录帐号对应权限，
+                users-by-username-query：查询登录用户是否存在
+                authorities-by-username-query：查询登录用户权限(登录用户可以不属于任何组，从t_user_role表中获取权限)
+                group-authorities-by-username-query：查询登录用户所在组的权限
+            -->
+            <jdbc-user-service data-source-ref="dataSource"
+                               group-authorities-by-username-query="SELECT role.ID,role.NAME,auth.NAME
+                             FROM roles AS role
+                             LEFT OUTER JOIN roles_authorities AS ra ON (role.ID = ra.ROLE_ID)
+                             LEFT OUTER JOIN authorities AS auth ON (auth.id = ra.AUTHORITY_ID)
+                             LEFT OUTER JOIN users_roles AS ur on (role.ID = ur.ROLE_ID)
+                             LEFT OUTER JOIN USER ON (USER.ID = ur.USER_ID)
+                             WHERE USER.NICKNAME = ?"
+                               users-by-username-query="SELECT USER.NICKNAME AS username,USER.PASSWORD as password,'true' AS enabled
+                             FROM USER
+                             WHERE USER.NICKNAME = ?"
+                               authorities-by-username-query="SELECT USER.NICKNAME AS username,authorities.NAME as authorities
+                               FROM USER
+                               LEFT OUTER JOIN users_roles AS userrole ON(USER.ID = userrole.USER_ID)
+                               LEFT OUTER JOIN roles AS role ON (userrole.ROLE_ID = role.ID)
+                               LEFT OUTER JOIN roles_authorities as ra on (role.ID = ra.ROLE_ID)
+                               LEFT OUTER JOIN authorities on(ra.AUTHORITY_ID = authorities.ID)
+                               WHERE USER.NICKNAME = ?" />
+        </authentication-provider>
+    </authentication-manager>
+
+    <!-- 自定义消息 -->
+    <beans:bean id="messageSource"
+            class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <beans:property name="basename" value="classpath:org/springframework/security/messages" />
+    </beans:bean>
+
+    <!-- 定制登录过滤器 -->
+    <beans:bean id="loginSuccessHandler" class="com.azhen.security.LoginSuccessHandler">
+        <beans:property name="defaultTargetUrl">
+            <!-- 登录成功后转发到该页面 -->
+            <!--<beans:value>/manager/films.jsp</beans:value>-->
+            <beans:value>/</beans:value>
+        </beans:property>
+    </beans:bean>
+    <beans:bean id="authenticationProcessingFilter" class="com.azhen.security.LoginUsernamePasswordAuthenticationFilter">
+        <beans:property name="authenticationSuccessHandler" ref="loginSuccessHandler"></beans:property>
+        <beans:property name="authenticationFailureHandler" ref="authenticationFailureHandler"></beans:property>
+        <beans:property name="authenticationManager" ref="authenticationManager"></beans:property>
+    </beans:bean>
+    <beans:bean id="authenticationFailureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+        <beans:property name="defaultFailureUrl">
+            <!-- 登录失败后转发到该页面 -->
+            <beans:value>/login.jsp?error=true</beans:value>
+        </beans:property>
+    </beans:bean>
+</beans:beans>
