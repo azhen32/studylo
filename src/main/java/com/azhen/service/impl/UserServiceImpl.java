@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService{
     }
 
     public Integer enable(String ids) {
-        userMapper.
+
         return null;
     }
 

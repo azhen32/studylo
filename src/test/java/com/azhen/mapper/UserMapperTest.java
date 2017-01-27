@@ -24,7 +24,6 @@ import static org.junit.Assert.assertNotNull;
 @Transactional
 public class UserMapperTest  {
 
-
     @Autowired
     private UserMapper userMapper;
     @Autowired
@@ -95,5 +94,11 @@ public class UserMapperTest  {
         for(User user : userList) {
             assertThat(user.getUserRoles()).isNotEmpty();
         }
+    }
+
+
+    @Test
+    public void updateBatch() throws Exception {
+
     }
 }

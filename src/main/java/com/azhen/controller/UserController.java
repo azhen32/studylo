@@ -33,9 +33,9 @@ public class UserController {
      * @return
      */
     @RequestMapping("/enable")
-    @RequestBody
+    //@RequestBody
     public Result enableUser(String ids) {
-        userService.batch(String ids);
+        //userService.batch(String ids);
         return Result.ok();
     }
 
@@ -72,6 +72,12 @@ public class UserController {
             JsonUtils.objectToJson(user);
         }
         return JsonUtils.objectToJson(Result.error());
+    }
+
+    @RequestMapping("/hello")
+    @ResponseBody
+    public String sayHello() {
+        return "Hello World";
     }
 
 }

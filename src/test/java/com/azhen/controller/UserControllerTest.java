@@ -115,8 +115,6 @@ public class UserControllerTest implements ApplicationContextAware{
     public void saveMock() throws Exception {
         System.out.println(userServiceBean == mockUserService);
         System.out.println(userControllerBean == mockUserController);
-        System.out.println(mockUserController.getUserService() == userServiceBean);
-        System.out.println(mockUserController.getUserService() == mockUserService);
         User user = new User("azhen","1234");
         user.setUpdateTime(new Date());
         when(mockUserService.save(user)).thenReturn(1);
