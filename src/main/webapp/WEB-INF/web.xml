@@ -19,7 +19,7 @@
         <param-value>classpath:spring/applicationContext-*.xml,classpath:spring/springmvc.xml</param-value>
     </context-param>
 
-    <!--ehcache 页面缓存过滤器 -->
+    <!--ehcache 整体页面缓存过滤器 -->
     <filter>
         <filter-name>PageCachingFilter</filter-name>
         <filter-class>net.sf.ehcache.constructs.web.filter.SimplePageCachingFilter</filter-class>
@@ -31,6 +31,22 @@
     <filter-mapping>
         <filter-name>PageCachingFilter</filter-name>
         <url-pattern>/pageCacheController/testPageCache.do</url-pattern>
+    </filter-mapping>
+
+    <!--ehcache 页面局部缓存 -->
+    <filter>
+        <filter-name>PageFragmentCachingFilter</filter-name>
+        <filter-class>net.sf.ehcache.constructs.web.filter.SimplePageFragmentCachingFilter</filter-class>
+        <init-param>
+            <param-name>cacheName</param-name>
+            <param-value>SimplePageFragmentCachingFilter</param-value>
+        </init-param>
+    </filter>
+    <!-- This is a filter chain. They are executed in the order below.Do not change the order. -->
+    <filter-mapping>
+        <filter-name>PageFragmentCachingFilter</filter-name>
+        <url-pattern>/page/testPageFragmentCache.jsp</url-pattern>
+        <dispatcher>INCLUDE</dispatcher>
     </filter-mapping>
 
     <!-- 2.解决post乱码 -->

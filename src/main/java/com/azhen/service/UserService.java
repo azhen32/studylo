@@ -25,6 +25,7 @@ public interface UserService {
     boolean hasMatchUser(String nickname, String password);
 
     User get(Long id);
+    String get(String userNo);
 
     EUDataGridResult getUserList(Integer page, Integer rows);
 }

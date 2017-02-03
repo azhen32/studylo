@@ -8,6 +8,7 @@
 		http://www.springframework.org/schema/security/spring-security.xsd">
 <http>
         <!-- 不拦截login.jsp -->
+        <intercept-url pattern="/ehcache.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <intercept-url pattern="/login.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <!--仅拦截到manager下面的内容，具备access对应权限的-->
         <intercept-url pattern="/manager/**" access="ROLE_ADMIN,ROLE_LAOBAN,ROLE_DIANZHANG,ROLE_DIANYUAN"/>
