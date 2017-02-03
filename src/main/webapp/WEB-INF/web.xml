@@ -18,6 +18,21 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:spring/applicationContext-*.xml,classpath:spring/springmvc.xml</param-value>
     </context-param>
+
+    <!--ehcache 页面缓存过滤器 -->
+    <filter>
+        <filter-name>PageCachingFilter</filter-name>
+        <filter-class>net.sf.ehcache.constructs.web.filter.SimplePageCachingFilter</filter-class>
+        <init-param>
+            <param-name>cacheName</param-name>
+            <param-value>SimplePageCachingFilter</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>PageCachingFilter</filter-name>
+        <url-pattern>/pageCacheController/testPageCache.do</url-pattern>
+    </filter-mapping>
+
     <!-- 2.解决post乱码 -->
     <filter>
         <filter-name>CharacterEncodingFilter</filter-name>
