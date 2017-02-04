@@ -1,6 +1,7 @@
 package com.azhen.mapper;
 
 import com.azhen.domain.*;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -12,10 +13,13 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -24,6 +28,7 @@ import static org.junit.Assert.assertNotNull;
 //@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 @Transactional
 public class UserMapperTest  {
+
 
     @Autowired
     private UserMapper userMapper;
@@ -59,8 +64,6 @@ public class UserMapperTest  {
         usersRoles2.setRoleId(2);
         usersRolesMapper.insert(usersRoles1);
         usersRolesMapper.insert(usersRoles2);
-
-
     }
 
     @Test
@@ -98,9 +101,31 @@ public class UserMapperTest  {
         }
     }
 
+    public void prebatchUpdate() {
+
+    }
 
     @Test
-    public void updateBatch() throws Exception {
+    public void batchUpdate() throws Exception {
+        User one = new User();
+        one.setId(1001L);
+        one.setState((byte)0x01);
+        userMapper.insert(one);
 
+        User two = new User();
+        two.setId(1002L);
+        two.setState((byte)0x01);
+        userMapper.insert(two);
+
+        User user = new User();
+        user.setState((byte)0x00);
+        List<String> ids = new ArrayList<>();
+        ids.add("1001");
+        ids.add("1002");
+        userMapper.batchUpdate(user,ids);
+        one = userMapper.selectByPrimaryKey(1001L);
+        two = userMapper.selectByPrimaryKey(1002L);
+        assertEquals(0,(int)one.getState());
+        assertEquals(0,(int)two.getState());
     }
 }

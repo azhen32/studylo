@@ -16,6 +16,8 @@ public interface UserService {
      * @return
      */
     Integer enable(String ids);
+    Integer disable(String ids);
+    Integer update(User user);
 
     User find(String nickName);
     User findByEmail(String email);
@@ -28,4 +30,8 @@ public interface UserService {
     String get(String userNo);
 
     EUDataGridResult getUserList(Integer page, Integer rows);
+
+    Integer delete(String ids);
+
+
 }

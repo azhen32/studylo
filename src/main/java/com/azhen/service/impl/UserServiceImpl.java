@@ -5,13 +5,17 @@ import com.azhen.domain.UserExample;
 import com.azhen.dto.EUDataGridResult;
 import com.azhen.mapper.UserMapper;
 import com.azhen.service.UserService;
+import com.azhen.util.StringUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,13 +29,34 @@ public class UserServiceImpl implements UserService{
     private UserMapper userMapper;
 
     public Integer save(User user) {
-        System.out.println("save");
         return userMapper.insert(user);
     }
 
     public Integer enable(String ids) {
+        User user = new User();
+        user.setState((byte)0x01);
+        List<String> list = StringUtil.toList(ids);
+        return userMapper.batchUpdate(user,list);
+    }
 
-        return null;
+    public Integer disable(String ids) {
+        User user = new User();
+        user.setState((byte)0x00);
+        List<String> list = StringUtil.toList(ids);
+        return userMapper.batchUpdate(user,list);
+    }
+
+    @Override
+    public Integer update(User user) {
+       return userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    @Override
+    public Integer delete(String ids) {
+        User user = new User();
+        user.setState((byte)0x00);
+        List<String> list = StringUtil.toList(ids);
+        return userMapper.batchDelete(user,list);
     }
 
     public User find(String nickName) {
@@ -103,6 +128,8 @@ public class UserServiceImpl implements UserService{
         result.setTotal(pageInfo.getTotal());
         return result;
     }
+
+
 
     private Map<String, String> usersData = new ConcurrentHashMap<String, String>();
 

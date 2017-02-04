@@ -33,9 +33,47 @@ public class UserController {
      * @return
      */
     @RequestMapping("/enable")
-    //@RequestBody
-    public Result enableUser(String ids) {
-        //userService.batch(String ids);
+    @ResponseBody
+    public Result enable(String ids) {
+        Integer result = userService.enable(ids);
+        if(result < 1)
+            return Result.error();
+        return Result.ok();
+    }
+
+    /**
+     * 禁止用户
+     * @param ids
+     * @return
+     */
+    @RequestMapping("/disable")
+    @ResponseBody
+    public Result disable(String ids) {
+        Integer result = userService.disable(ids);
+        if(result < 1)
+            return Result.error();
+        return Result.ok();
+    }
+
+    /**
+     * 删除用户
+     * @param ids
+     * @return
+     */
+    @RequestMapping("/delete")
+    public Result delete(String ids) {
+        Integer result = userService.delete(ids);
+        if(result < 1)
+            return Result.error();
+        return Result.ok();
+    }
+
+    @RequestMapping("/update")
+    @ResponseBody
+    public Result update(User user) {
+        Integer result = userService.update(user);
+        if(result < 1)
+            return Result.error();
         return Result.ok();
     }
 

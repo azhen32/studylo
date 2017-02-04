@@ -25,7 +25,8 @@ public interface UserMapper {
 
     User selectByPrimaryKey(Long id);
 
-    //int updateBatch(User record,List<String> idList);
+    int batchUpdate(@Param("record")User user,@Param("list")List<String> idList);
+    int batchDelete(User user, List<String> list);
 
     UsersRoles findUserRoleById(Long id);
 
@@ -36,4 +37,6 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+
+
 }

@@ -16,7 +16,7 @@
 </table>
 <div id="userAddWindow" class="easyui-window" title="添加用户" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:80%;height:80%;padding:10px;">
 </div>
-<div id="itemEditWindow" class="easyui-window" title="编辑商品" data-options="modal:true,closed:true,iconCls:'icon-save',href:'/rest/page/user-edit'" style="width:80%;height:80%;padding:10px;">
+<div id="itemEditWindow" class="easyui-window" title="编辑用户" data-options="modal:true,closed:true,iconCls:'icon-save',href:'/page/user-edit'" style="width:80%;height:80%;padding:10px;">
 </div>
 <script>
 
@@ -47,11 +47,11 @@
         handler:function(){
             var ids = getSelectionsIds();
             if(ids.length == 0){
-                $.messager.alert('提示','必须选择一个商品才能编辑!');
+                $.messager.alert('提示','必须选择一个用户才能编辑!');
                 return ;
             }
             if(ids.indexOf(',') > 0){
-                $.messager.alert('提示','只能选择一个商品!');
+                $.messager.alert('提示','只能选择一个用户!');
                 return ;
             }
 
@@ -60,44 +60,8 @@
                 onLoad :function(){
                     //回显数据
                     var data = $("#itemList").datagrid("getSelections")[0];
-                    data.priceView = AZUtil.formatPrice(data.price);
+                    console.log(data);
                     $("#itemeEditForm").form("load",data);
-
-                    // 加载商品描述
-                    $.getJSON('/rest/item/query/item/desc/'+data.id,function(_data){
-                        if(_data.status == 200){
-                            //UM.getEditor('itemeEditDescEditor').setContent(_data.data.itemDesc, false);
-                            itemEditEditor.html(_data.data.itemDesc);
-                        }
-                    });
-
-                    //加载商品类目
-                    $.getJSON('/rest/item/param/item/query/'+data.id,function(_data){
-                        if(_data && _data.status == 200 && _data.data && _data.data.paramData){
-                            $("#itemeEditForm .params").show();
-                            $("#itemeEditForm [name=itemParams]").val(_data.data.paramData);
-                            $("#itemeEditForm [name=itemParamId]").val(_data.data.id);
-
-                            //回显商品规格
-                            var paramData = JSON.parse(_data.data.paramData);
-
-                            var html = "<ul>";
-                            for(var i in paramData){
-                                var pd = paramData[i];
-                                html+="<li><table>";
-                                html+="<tr><td colspan=\"2\" class=\"group\">"+pd.group+"</td></tr>";
-
-                                for(var j in pd.params){
-                                    var ps = pd.params[j];
-                                    html+="<tr><td class=\"param\"><span>"+ps.k+"</span>: </td><td><input autocomplete=\"off\" type=\"text\" value='"+ps.v+"'/></td></tr>";
-                                }
-
-                                html+="</li></table>";
-                            }
-                            html+= "</ul>";
-                            $("#itemeEditForm .params td").eq(1).html(html);
-                        }
-                    });
 
                     AZUtil.init({
                         "pics" : data.image,
@@ -115,15 +79,15 @@
         handler:function(){
             var ids = getSelectionsIds();
             if(ids.length == 0){
-                $.messager.alert('提示','未选中商品!');
+                $.messager.alert('提示','未选中用户!');
                 return ;
             }
-            $.messager.confirm('确认','确定删除ID为 '+ids+' 的商品吗？',function(r){
+            $.messager.confirm('确认','确定删除ID为 '+ids+' 的用户吗？',function(r){
                 if (r){
                     var params = {"ids":ids};
-                    $.post("/rest/item/delete",params, function(data){
+                    $.post("/user/delete",params, function(data){
                         if(data.status == 200){
-                            $.messager.alert('提示','删除商品成功!',undefined,function(){
+                            $.messager.alert('提示','删除用户成功!',undefined,function(){
                                 $("#itemList").datagrid("reload");
                             });
                         }
@@ -137,15 +101,15 @@
         handler:function(){
             var ids = getSelectionsIds();
             if(ids.length == 0){
-                $.messager.alert('提示','未选中商品!');
+                $.messager.alert('提示','未选中用户!');
                 return ;
             }
-            $.messager.confirm('确认','确定下架ID为 '+ids+' 的商品吗？',function(r){
+            $.messager.confirm('确认','确定启用ID为 '+ids+' 的用户吗？',function(r){
                 if (r){
                     var params = {"ids":ids};
                     $.post("/user/enable",params, function(data){
                         if(data.status == 200){
-                            $.messager.alert('提示','下架商品成功!',undefined,function(){
+                            $.messager.alert('提示','用户激活成功!',undefined,function(){
                                 $("#itemList").datagrid("reload");
                             });
                         }
@@ -159,15 +123,15 @@
         handler:function(){
             var ids = getSelectionsIds();
             if(ids.length == 0){
-                $.messager.alert('提示','未选中商品!');
+                $.messager.alert('提示','未选中用户!');
                 return ;
             }
-            $.messager.confirm('确认','确定上架ID为 '+ids+' 的商品吗？',function(r){
+            $.messager.confirm('确认','禁用ID为 '+ids+' 的用户吗？',function(r){
                 if (r){
                     var params = {"ids":ids};
-                    $.post("/user/inable",params, function(data){
+                    $.post("/user/disable",params, function(data){
                         if(data.status == 200){
-                            $.messager.alert('提示','上架商品成功!',undefined,function(){
+                            $.messager.alert('提示','用户禁用成功!',undefined,function(){
                                 $("#itemList").datagrid("reload");
                             });
                         }
