@@ -26,7 +26,7 @@ public interface UserMapper {
     User selectByPrimaryKey(Long id);
 
     int batchUpdate(@Param("record")User user,@Param("list")List<String> idList);
-    int batchDelete(User user, List<String> list);
+    int batchDelete(List<String> list);
 
     UsersRoles findUserRoleById(Long id);
 

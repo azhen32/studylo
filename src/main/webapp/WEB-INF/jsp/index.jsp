@@ -57,10 +57,25 @@
                     <li>
                         <span>用户相关</span>
                         <ul id="tt3" class="easyui-tree" >
-                            <%--<li><a  onclick="addTab('用户管理','http://www.baidu.com')"><span>用户管理</span></a></li>--%>
-                                <li data-options="attributes:{'url':'user-list'}">用户管理</li>
+                            <li data-options="attributes:{'url':'user-list'}">用户管理</li>
+                            <li data-options="attributes:{'url':'role-list'}">用户管理</li>
+                            <li data-options="attributes:{'url':'auth-category'}">权限管理</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <span>视频管理</span>
+                        <ul id="tt4" class="easyui-tree" >
+                            <li data-options="attributes:{'url':'user-list'}">用户管理</li>
                             <li><a onclick="addTab('角色管理','http://www.bing.com')"><span>角色管理</span></a></li>
-                            <li><a onclick="addTab('权限管理','http://www.csdn.com')"><span>权限管理</span></a></li>
+                            <li data-options="attributes:{'url':'auth-category'}">权限管理</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <span>内容管理</span>
+                        <ul id="tt5" class="easyui-tree" >
+                            <li data-options="attributes:{'url':'user-list'}">用户管理</li>
+                            <li><a onclick="addTab('角色管理','http://www.bing.com')"><span>角色管理</span></a></li>
+                            <li data-options="attributes:{'url':'auth-category'}">权限管理</li>
                         </ul>
                     </li>
                 </ul>

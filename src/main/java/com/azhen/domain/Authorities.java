@@ -1,40 +1,51 @@
 package com.azhen.domain;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class Authorities {
-    private Integer id;
+    private Long id;
 
-    private String name;
+    private Long parentId;
 
-    private String displayName;
+    private Boolean isParent;
 
     private String authoritiesType;
 
     private BigDecimal authoritiesId;
 
-    public Integer getId() {
+    private Integer sortOrder;
+
+    private Byte status;
+
+    private String displayName;
+
+    private Date createTime;
+
+    private Date updateTime;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Long getParentId() {
+        return parentId;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public Boolean getIsParent() {
+        return isParent;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName == null ? null : displayName.trim();
+    public void setIsParent(Boolean isParent) {
+        this.isParent = isParent;
     }
 
     public String getAuthoritiesType() {
@@ -51,5 +62,45 @@ public class Authorities {
 
     public void setAuthoritiesId(BigDecimal authoritiesId) {
         this.authoritiesId = authoritiesId;
+    }
+
+    public Integer getSortOrder() {
+        return sortOrder;
+    }
+
+    public void setSortOrder(Integer sortOrder) {
+        this.sortOrder = sortOrder;
+    }
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName == null ? null : displayName.trim();
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

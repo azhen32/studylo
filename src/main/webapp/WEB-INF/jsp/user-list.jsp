@@ -14,7 +14,7 @@
     </tr>
     </thead>
 </table>
-<div id="userAddWindow" class="easyui-window" title="添加用户" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:80%;height:80%;padding:10px;">
+<div id="userAddWindow" class="easyui-window" title="添加用户" data-options="modal:true,closed:true,iconCls:'icon-save',href:'/page/user-add'" style="width:80%;height:80%;padding:10px;">
 </div>
 <div id="itemEditWindow" class="easyui-window" title="编辑用户" data-options="modal:true,closed:true,iconCls:'icon-save',href:'/page/user-edit'" style="width:80%;height:80%;padding:10px;">
 </div>
@@ -35,9 +35,9 @@
         text:'新增',
         iconCls:'icon-add',
         handler:function(){
-            $("#itemEditWindow").window({
+            $("#userAddWindow").window({
                 onLoad :function(){
-
+                    $("#itemAddForm").form();
                 }
             }).window("open");
         }
@@ -60,16 +60,15 @@
                 onLoad :function(){
                     //回显数据
                     var data = $("#itemList").datagrid("getSelections")[0];
-                    console.log(data);
                     $("#itemeEditForm").form("load",data);
 
-                    AZUtil.init({
+                /*    AZUtil.init({
                         "pics" : data.image,
                         "cid" : data.cid,
                         fun:function(node){
                             AZUtil.changeItemParam(node, "itemeEditForm");
                         }
-                    });
+                    });*/
                 }
             }).window("open");
         }

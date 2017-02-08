@@ -43,7 +43,7 @@
                 group-authorities-by-username-query：查询登录用户所在组的权限
             -->
             <jdbc-user-service data-source-ref="dataSource"
-                               group-authorities-by-username-query="SELECT role.ID,role.NAME,auth.NAME
+                               group-authorities-by-username-query="SELECT role.ID,role.NAME,auth.DISPLAY_NAME
                              FROM roles AS role
                              LEFT OUTER JOIN roles_authorities AS ra ON (role.ID = ra.ROLE_ID)
                              LEFT OUTER JOIN authorities AS auth ON (auth.id = ra.AUTHORITY_ID)
@@ -53,7 +53,7 @@
                                users-by-username-query="SELECT USER.NICKNAME AS username,USER.PASSWORD as password,'true' AS enabled
                              FROM USER
                              WHERE USER.NICKNAME = ?"
-                               authorities-by-username-query="SELECT USER.NICKNAME AS username,authorities.NAME as authorities
+                               authorities-by-username-query="SELECT USER.NICKNAME AS username,authorities.DISPLAY_NAME as authorities
                                FROM USER
                                LEFT OUTER JOIN users_roles AS userrole ON(USER.ID = userrole.USER_ID)
                                LEFT OUTER JOIN roles AS role ON (userrole.ROLE_ID = role.ID)

@@ -12,11 +12,11 @@
 	        </tr>
 	        <tr>
 	            <td>邮箱:</td>
-	            <td><input class="easyui-textbox" name="email" data-options="multiline:true,validType:'length[0,150]'" style="width: 280px;"></input></td>
+	            <td><input class="easyui-textbox" name="email" data-options="required:true,validType:'length[0,150]'" style="width: 280px;"></input></td>
 	        </tr>
 	        <tr>
 	            <td>电话:</td>
-	            <td><input class="easyui-numberbox" type="text" name="phone" data-options="min:1,max:99999999,precision:2,required:true" />
+	            <td><input class="easyui-numberbox" type="text" name="phone" data-options="validType:'length[5,20]',required:true" />
 	            	<input type="hidden" name="price"/>
 	            </td>
 	        </tr>

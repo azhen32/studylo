@@ -68,6 +68,11 @@ public class UserController {
         return Result.ok();
     }
 
+    /**
+     * 修改用户
+     * @param user
+     * @return
+     */
     @RequestMapping("/update")
     @ResponseBody
     public Result update(User user) {
@@ -91,16 +96,23 @@ public class UserController {
         return result;
     }
 
-    @RequestMapping(value="/store",method = RequestMethod.POST)
-    public String save(@Valid User user, BindingResult result) {
+    /**
+     * 新增用户
+     * @param user
+     * @param result
+     * @return
+     */
+    @RequestMapping(value="/save",method = RequestMethod.POST)
+    @ResponseBody
+    public Result save(@Valid User user, BindingResult result) {
         if(result.hasErrors()) {
-            return "error";
+            return Result.error();
         }
         Integer status = userService.save(user);
         if(1 != status) {
-            return "error";
+            return Result.error();
         }
-        return "success";
+        return Result.ok();
     }
     @RequestMapping(value="/{id}",method = RequestMethod.POST)
     @ResponseBody

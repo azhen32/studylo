@@ -19,7 +19,7 @@ public class User {
     private String phone;
 
     @NotBlank(message="{email.notblank}")
-    @Pattern(regexp = "[a-zA-Z]{5,20}", message = "{email.format.illegal}")
+    @Pattern(regexp = "^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+", message = "{email.format.illegal}")
     private String email;
 
     @NotNull(message = "{password.notnull}")

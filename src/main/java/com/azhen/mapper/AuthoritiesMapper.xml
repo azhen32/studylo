@@ -2,11 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.azhen.mapper.AuthoritiesMapper" >
   <resultMap id="BaseResultMap" type="com.azhen.domain.Authorities" >
-    <id column="ID" property="id" jdbcType="INTEGER" />
-    <result column="NAME" property="name" jdbcType="VARCHAR" />
-    <result column="DISPLAY_NAME" property="displayName" jdbcType="VARCHAR" />
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="PARENT_ID" property="parentId" jdbcType="BIGINT" />
+    <result column="IS_PARENT" property="isParent" jdbcType="BIT" />
     <result column="AUTHORITIES_TYPE" property="authoritiesType" jdbcType="VARCHAR" />
     <result column="AUTHORITIES_ID" property="authoritiesId" jdbcType="DECIMAL" />
+    <result column="SORT_ORDER" property="sortOrder" jdbcType="INTEGER" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="DISPLAY_NAME" property="displayName" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -67,7 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    ID, NAME, DISPLAY_NAME, AUTHORITIES_TYPE, AUTHORITIES_ID
+    ID, PARENT_ID, IS_PARENT, AUTHORITIES_TYPE, AUTHORITIES_ID, SORT_ORDER, STATUS, DISPLAY_NAME, 
+    CREATE_TIME, UPDATE_TIME
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.azhen.domain.AuthoritiesExample" >
     select
@@ -83,15 +89,15 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from authorities
-    where ID = #{id,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from authorities
-    where ID = #{id,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=BIGINT}
   </delete>
   <delete id="deleteByExample" parameterType="com.azhen.domain.AuthoritiesExample" >
     delete from authorities
@@ -100,10 +106,18 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.azhen.domain.Authorities" >
-    insert into authorities (ID, NAME, DISPLAY_NAME, 
-      AUTHORITIES_TYPE, AUTHORITIES_ID)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{displayName,jdbcType=VARCHAR}, 
-      #{authoritiesType,jdbcType=VARCHAR}, #{authoritiesId,jdbcType=DECIMAL})
+    <!-- 在sql语句执行之后执行,设置到实体的id -->
+    <selectKey keyProperty="id" resultType="long" order="AFTER">
+      SELECT LAST_INSERT_iD()
+    </selectKey>
+    insert into authorities (ID, PARENT_ID, IS_PARENT, 
+      AUTHORITIES_TYPE, AUTHORITIES_ID, SORT_ORDER, 
+      STATUS, DISPLAY_NAME, CREATE_TIME, 
+      UPDATE_TIME)
+    values (#{id,jdbcType=BIGINT}, #{parentId,jdbcType=BIGINT}, #{isParent,jdbcType=BIT}, 
+      #{authoritiesType,jdbcType=VARCHAR}, #{authoritiesId,jdbcType=DECIMAL}, #{sortOrder,jdbcType=INTEGER}, 
+      #{status,jdbcType=TINYINT}, #{displayName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.azhen.domain.Authorities" >
     insert into authorities
@@ -111,11 +125,11 @@
       <if test="id != null" >
         ID,
       </if>
-      <if test="name != null" >
-        NAME,
+      <if test="parentId != null" >
+        PARENT_ID,
       </if>
-      <if test="displayName != null" >
-        DISPLAY_NAME,
+      <if test="isParent != null" >
+        IS_PARENT,
       </if>
       <if test="authoritiesType != null" >
         AUTHORITIES_TYPE,
@@ -123,22 +137,52 @@
       <if test="authoritiesId != null" >
         AUTHORITIES_ID,
       </if>
+      <if test="sortOrder != null" >
+        SORT_ORDER,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="displayName != null" >
+        DISPLAY_NAME,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=BIGINT},
       </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
+      <if test="parentId != null" >
+        #{parentId,jdbcType=BIGINT},
       </if>
-      <if test="displayName != null" >
-        #{displayName,jdbcType=VARCHAR},
+      <if test="isParent != null" >
+        #{isParent,jdbcType=BIT},
       </if>
       <if test="authoritiesType != null" >
         #{authoritiesType,jdbcType=VARCHAR},
       </if>
       <if test="authoritiesId != null" >
         #{authoritiesId,jdbcType=DECIMAL},
+      </if>
+      <if test="sortOrder != null" >
+        #{sortOrder,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="displayName != null" >
+        #{displayName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -152,19 +196,34 @@
     update authorities
     <set >
       <if test="record.id != null" >
-        ID = #{record.id,jdbcType=INTEGER},
+        ID = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.name != null" >
-        NAME = #{record.name,jdbcType=VARCHAR},
+      <if test="record.parentId != null" >
+        PARENT_ID = #{record.parentId,jdbcType=BIGINT},
       </if>
-      <if test="record.displayName != null" >
-        DISPLAY_NAME = #{record.displayName,jdbcType=VARCHAR},
+      <if test="record.isParent != null" >
+        IS_PARENT = #{record.isParent,jdbcType=BIT},
       </if>
       <if test="record.authoritiesType != null" >
         AUTHORITIES_TYPE = #{record.authoritiesType,jdbcType=VARCHAR},
       </if>
       <if test="record.authoritiesId != null" >
         AUTHORITIES_ID = #{record.authoritiesId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sortOrder != null" >
+        SORT_ORDER = #{record.sortOrder,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.displayName != null" >
+        DISPLAY_NAME = #{record.displayName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -173,11 +232,16 @@
   </update>
   <update id="updateByExample" parameterType="map" >
     update authorities
-    set ID = #{record.id,jdbcType=INTEGER},
-      NAME = #{record.name,jdbcType=VARCHAR},
-      DISPLAY_NAME = #{record.displayName,jdbcType=VARCHAR},
+    set ID = #{record.id,jdbcType=BIGINT},
+      PARENT_ID = #{record.parentId,jdbcType=BIGINT},
+      IS_PARENT = #{record.isParent,jdbcType=BIT},
       AUTHORITIES_TYPE = #{record.authoritiesType,jdbcType=VARCHAR},
-      AUTHORITIES_ID = #{record.authoritiesId,jdbcType=DECIMAL}
+      AUTHORITIES_ID = #{record.authoritiesId,jdbcType=DECIMAL},
+      SORT_ORDER = #{record.sortOrder,jdbcType=INTEGER},
+      STATUS = #{record.status,jdbcType=TINYINT},
+      DISPLAY_NAME = #{record.displayName,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -185,11 +249,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.azhen.domain.Authorities" >
     update authorities
     <set >
-      <if test="name != null" >
-        NAME = #{name,jdbcType=VARCHAR},
+      <if test="parentId != null" >
+        PARENT_ID = #{parentId,jdbcType=BIGINT},
       </if>
-      <if test="displayName != null" >
-        DISPLAY_NAME = #{displayName,jdbcType=VARCHAR},
+      <if test="isParent != null" >
+        IS_PARENT = #{isParent,jdbcType=BIT},
       </if>
       <if test="authoritiesType != null" >
         AUTHORITIES_TYPE = #{authoritiesType,jdbcType=VARCHAR},
@@ -197,15 +261,35 @@
       <if test="authoritiesId != null" >
         AUTHORITIES_ID = #{authoritiesId,jdbcType=DECIMAL},
       </if>
+      <if test="sortOrder != null" >
+        SORT_ORDER = #{sortOrder,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="displayName != null" >
+        DISPLAY_NAME = #{displayName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
-    where ID = #{id,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.azhen.domain.Authorities" >
     update authorities
-    set NAME = #{name,jdbcType=VARCHAR},
-      DISPLAY_NAME = #{displayName,jdbcType=VARCHAR},
+    set PARENT_ID = #{parentId,jdbcType=BIGINT},
+      IS_PARENT = #{isParent,jdbcType=BIT},
       AUTHORITIES_TYPE = #{authoritiesType,jdbcType=VARCHAR},
-      AUTHORITIES_ID = #{authoritiesId,jdbcType=DECIMAL}
-    where ID = #{id,jdbcType=INTEGER}
+      AUTHORITIES_ID = #{authoritiesId,jdbcType=DECIMAL},
+      SORT_ORDER = #{sortOrder,jdbcType=INTEGER},
+      STATUS = #{status,jdbcType=TINYINT},
+      DISPLAY_NAME = #{displayName,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

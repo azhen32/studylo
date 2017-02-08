@@ -10,7 +10,7 @@ public interface AuthoritiesMapper {
 
     int deleteByExample(AuthoritiesExample example);
 
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Long id);
 
     int insert(Authorities record);
 
@@ -18,7 +18,7 @@ public interface AuthoritiesMapper {
 
     List<Authorities> selectByExample(AuthoritiesExample example);
 
-    Authorities selectByPrimaryKey(Integer id);
+    Authorities selectByPrimaryKey(Long id);
 
     int updateByExampleSelective(@Param("record") Authorities record, @Param("example") AuthoritiesExample example);
 

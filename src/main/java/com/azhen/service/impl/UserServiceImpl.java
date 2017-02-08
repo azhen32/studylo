@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService{
         User user = new User();
         user.setState((byte)0x00);
         List<String> list = StringUtil.toList(ids);
-        return userMapper.batchDelete(user,list);
+        return userMapper.batchDelete(list);
     }
 
     public User find(String nickName) {
