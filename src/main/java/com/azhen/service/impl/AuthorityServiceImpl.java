@@ -1,10 +1,8 @@
 package com.azhen.service.impl;
 
-import com.azhen.constants.StatEnum;
 import com.azhen.domain.Authorities;
 import com.azhen.domain.AuthoritiesExample;
 import com.azhen.dto.EUTreeNode;
-import com.azhen.exception.BaseException;
 import com.azhen.mapper.AuthoritiesMapper;
 import com.azhen.service.AuthorityService;
 import org.springframework.beans.factory.annotation.Autowired;

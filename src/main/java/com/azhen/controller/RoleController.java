@@ -1,6 +1,7 @@
 package com.azhen.controller;
 
 import com.azhen.dto.EUDataGridResult;
+import com.azhen.dto.Result;
 import com.azhen.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,9 +17,25 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
+    /**
+     * 查询角色列表
+     * @param page
+     * @param rows
+     * @return
+     */
     @RequestMapping("/list")
     @ResponseBody
-    public EUDataGridResult list() {
+    public EUDataGridResult list(Integer page,Integer rows) {
+        EUDataGridResult result = roleService.getRoleList(page,rows);
+        return result;
+    }
+
+    /**
+     * 新增角色
+     */
+    @RequestMapping("/save")
+    @ResponseBody
+    public Result save(String authIds,String name) {
         return null;
     }
 }

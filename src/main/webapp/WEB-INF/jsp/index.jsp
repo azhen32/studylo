@@ -13,18 +13,6 @@
     <script type="text/javascript" src="js/jquery-easyui-1.4.1/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="js/common.js"></script>
     <script type="text/javascript">
-       /* function addTab(title, url){
-            if ($('#tabs').tabs('exists', title)){
-                $('#tabs').tabs('select', title);
-            } else {
-                var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
-                $('#tabs').tabs('add',{
-                    title:title,
-                    content:content,
-                    closable:true
-                });
-            }
-        }*/
        $(function(){
            $('#menu').tree({
                onClick: function(node){
@@ -58,7 +46,7 @@
                         <span>用户相关</span>
                         <ul id="tt3" class="easyui-tree" >
                             <li data-options="attributes:{'url':'user-list'}">用户管理</li>
-                            <li data-options="attributes:{'url':'role-list'}">用户管理</li>
+                            <li data-options="attributes:{'url':'role-list'}">角色管理</li>
                             <li data-options="attributes:{'url':'auth-category'}">权限管理</li>
                         </ul>
                     </li>

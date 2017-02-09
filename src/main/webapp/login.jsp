@@ -12,28 +12,31 @@
     <title>后台登录</title>
 </head>
 <body onload="document.loginForm.j_username.focus();">
-<!-- 登录表单 -->
-<form name="loginForm" action="<c:url value='/j_spring_security_check'/>" method="post">
-    <!-- 登录失败后，显示之前的登录名 -->
-    用户名：<input type='text' name='j_username' class="txtinput" value="admin"
-               value='<c:if test="${not empty param.login_error}" >
-		<c:out value="${SPRING_SECURITY_LAST_USERNAME}"/></c:if>' />
-    <br />
-    密码：<input type='password' name='j_password' class="txtinput" value="admin"/>
-    <br />
+    <center>
+        <!-- 登录表单 -->
+        <form name="loginForm" action="<c:url value='/j_spring_security_check'/>" method="post">
+            <!-- 登录失败后，显示之前的登录名 -->
+            用户名：<input type='text' name='j_username' class="txtinput" value="admin"
+                       value='<c:if test="${not empty param.login_error}" >
+		            <c:out value="${SPRING_SECURITY_LAST_USERNAME}"/></c:if>' />
+            <br />
+            密码：<input type='password' name='j_password' class="txtinput" value="admin"/>
+            <br />
 
-    <input type="checkbox" name="_spring_security_remember_me" />
-    &nbsp;保存登录信息
-    <input name="submit" type="submit" value="提交" />
-    <input name="reset" type="reset" value="重置" />
+            <input type="checkbox" name="_spring_security_remember_me" />
+            &nbsp;保存登录信息
+            <input name="submit" type="submit" value="提交" />
+            <input name="reset" type="reset" value="重置" />
 
-</form>
-<br />
-<!-- 显示登录失败原因 -->
-<c:if test="${not empty param.error}">
-    <font color="red"> 登录失败<br />
+        </form>
         <br />
-        原因: <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />. </font>
-</c:if>
+        <!-- 显示登录失败原因 -->
+        <c:if test="${not empty param.error}">
+            <font color="red"> 登录失败<br />
+                <br />
+                原因: <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />. </font>
+        </c:if>
+    </center>
+
 </body>
 </html>

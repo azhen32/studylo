@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <div>
+    <a id="openBtn" class="easyui-linkbutton" data-options="iconCls:'icon-add'">展开</a>
+    <a id="closeBtn" class="easyui-linkbutton" data-options="iconCls:'icon-remove'">关闭</a>
     <!-- 树型控件 -->
     <ul id="contentCategory" class="easyui-tree">
     </ul>
@@ -12,12 +14,55 @@
     <div data-options="iconCls:'icon-remove',name:'delete'">删除</div>
 </div>
 <script type="text/javascript">
+    function setParentChecked(node) {
+        console.log(node);
+    }
+
+    function getSelectionsIds(){
+        var contentCategory = $("#contentCategory");
+        var sels = contentCategory.tree('getChecked','checked');
+        console.log(sels);
+        var ids = [];
+        for(var i in sels){
+            ids.push(sels[i].id);
+        }
+        ids = ids.join(",");
+        return ids;
+    }
+
+    function openTree(node) {
+        node = $(node);
+        //console.log(node.tree('options'));
+      /*  var options = $(node.tree('options'));
+        options.attr('state','open');*/
+        node.tree('expandAll');
+
+        //var $childs = node.tree('getChildren');
+        //console.log($childs);
+        /*for(var i = 0, len = $childs.length; i < len; i ++) {
+            openTree($childs[i]);
+        }*/
+    }
+
+    function closeTree(node) {
+        node = $(node);
+        node.tree('collapseAll');
+    }
+
     $(function(){
+
+        $("#openBtn").bind('click',function () {
+           openTree($("#contentCategory"));
+        });
         $("#contentCategory").tree({
             url : '/user/role/authority/list',
             animate: true,
             checkbox: true,
             method : "GET",
+            onCheck: function (node,checked) {
+                setParentChecked(node);
+                //console.log(getSelectionsIds());
+            },
             onContextMenu: function(e,node){
                 e.preventDefault();
                 $(this).tree('select',node.target);

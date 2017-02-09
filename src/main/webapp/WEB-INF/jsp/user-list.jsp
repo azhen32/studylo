@@ -19,7 +19,6 @@
 <div id="itemEditWindow" class="easyui-window" title="编辑用户" data-options="modal:true,closed:true,iconCls:'icon-save',href:'/page/user-edit'" style="width:80%;height:80%;padding:10px;">
 </div>
 <script>
-
     function getSelectionsIds(){
         var itemList = $("#itemList");
         var sels = itemList.datagrid("getSelections");
@@ -37,7 +36,7 @@
         handler:function(){
             $("#userAddWindow").window({
                 onLoad :function(){
-                    $("#itemAddForm").form();
+                    $("#userAddForm").form();
                 }
             }).window("open");
         }
@@ -61,14 +60,6 @@
                     //回显数据
                     var data = $("#itemList").datagrid("getSelections")[0];
                     $("#itemeEditForm").form("load",data);
-
-                /*    AZUtil.init({
-                        "pics" : data.image,
-                        "cid" : data.cid,
-                        fun:function(node){
-                            AZUtil.changeItemParam(node, "itemeEditForm");
-                        }
-                    });*/
                 }
             }).window("open");
         }
