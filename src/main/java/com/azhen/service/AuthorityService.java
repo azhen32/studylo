@@ -16,4 +16,5 @@ public interface AuthorityService {
     Integer update(Authorities auth);
 
     Integer delete(Authorities auth);
+
 }

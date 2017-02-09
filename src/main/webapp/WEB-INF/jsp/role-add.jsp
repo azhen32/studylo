@@ -9,10 +9,10 @@
 				<table cellpadding="5">
 					<tr>
 						<td>权限名:</td>
-						<td><input class="easyui-textbox" type="text" name="nickname" data-options="required:true" style="width: 280px;"></td>
+						<td><input class="easyui-textbox" type="text" name="name" data-options="required:true" style="width: 280px;"></td>
 					</tr>
 				</table>
-				<input type="hidden" name="authIds"/>
+				<input type="hidden" name="authIds" id = "authIds"/>
 			</form>
 			<div style="padding:5px">
 				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">提交</a>
@@ -22,6 +22,20 @@
 	</div>
 </div>
 <script type="text/javascript">
+	function getSelectionsIds(){
+		var contentCategory = $("#contentCategory");
+		var sels = contentCategory.tree('getChecked','checked');
+		var ids = [];
+		for(var i in sels){
+			var childs = $("#contentCategory").tree('getChildren',sels[i].target);
+			if(childs.length == 0) {
+				ids.push(sels[i].id);
+			}
+		}
+		ids = ids.join(",");
+		return ids;
+	}
+
 	$(function() {
 		$("#authTree").panel({
 			href : "/page/auth-category"
@@ -35,28 +49,10 @@
 			$.messager.alert('提示','表单还未填写完成!');
 			return ;
 		}
-
-		var paramJson = [];
-		$("#roleAddForm .params li").each(function(i,e){
-			var trs = $(e).find("tr");
-			var group = trs.eq(0).text();
-			var ps = [];
-			for(var i = 1;i<trs.length;i++){
-				var tr = trs.eq(i);
-				ps.push({
-					"k" : $.trim(tr.find("td").eq(0).find("span").text()),
-					"v" : $.trim(tr.find("input").val())
-				});
-			}
-			paramJson.push({
-				"group" : group,
-				"params": ps
-			});
-		});
-		//把json对象转换成字符串
-		paramJson = JSON.stringify(paramJson);
-		$("#roleAddForm [name=itemParams]").val(paramJson);
-
+		var val = getSelectionsIds();
+		console.log(val);
+		var $node = $('#authIds');
+		$node.val(val);
 		$.post("/user/role/save",$("#roleAddForm").serialize(), function(data){
 			if(data.status == 200){
 				$.messager.alert('提示','新增角色成功!');

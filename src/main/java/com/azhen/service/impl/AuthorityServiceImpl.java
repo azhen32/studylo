@@ -76,5 +76,4 @@ public class AuthorityServiceImpl implements AuthorityService {
         return result;
     }
 
-
 }

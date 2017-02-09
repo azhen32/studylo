@@ -14,17 +14,17 @@
     <div data-options="iconCls:'icon-remove',name:'delete'">删除</div>
 </div>
 <script type="text/javascript">
-    function setParentChecked(node) {
-        console.log(node);
-    }
 
     function getSelectionsIds(){
         var contentCategory = $("#contentCategory");
         var sels = contentCategory.tree('getChecked','checked');
-        console.log(sels);
         var ids = [];
         for(var i in sels){
-            ids.push(sels[i].id);
+            var childs = $("#contentCategory").tree('getChildren',sels[i].target);
+            if(childs.length == 0) {
+                ids.push(sels[i].id);
+                console.log(sels[i]);
+            }
         }
         ids = ids.join(",");
         return ids;
@@ -32,16 +32,7 @@
 
     function openTree(node) {
         node = $(node);
-        //console.log(node.tree('options'));
-      /*  var options = $(node.tree('options'));
-        options.attr('state','open');*/
         node.tree('expandAll');
-
-        //var $childs = node.tree('getChildren');
-        //console.log($childs);
-        /*for(var i = 0, len = $childs.length; i < len; i ++) {
-            openTree($childs[i]);
-        }*/
     }
 
     function closeTree(node) {
@@ -54,15 +45,19 @@
         $("#openBtn").bind('click',function () {
            openTree($("#contentCategory"));
         });
+
+        $("#closeBtn").bind('click',function () {
+            closeTree($("#contentCategory"));
+        });
+
+        $("#submitBtn").bind('click',function () {
+            console.log(getSelectionsIds());
+        })
         $("#contentCategory").tree({
             url : '/user/role/authority/list',
             animate: true,
             checkbox: true,
             method : "GET",
-            onCheck: function (node,checked) {
-                setParentChecked(node);
-                //console.log(getSelectionsIds());
-            },
             onContextMenu: function(e,node){
                 e.preventDefault();
                 $(this).tree('select',node.target);

@@ -36,6 +36,7 @@ public class RoleController {
     @RequestMapping("/save")
     @ResponseBody
     public Result save(String authIds,String name) {
-        return null;
+        roleService.save(authIds,name);
+        return Result.ok();
     }
 }
